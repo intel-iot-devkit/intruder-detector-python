@@ -1,0 +1,8 @@
+video: ./resources/person-bicycle-car-detection.mp4
+intruder: person
+intruder: bicycle
+intruder: car
+
+
+
+
