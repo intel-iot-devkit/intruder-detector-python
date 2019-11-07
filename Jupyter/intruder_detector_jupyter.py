@@ -45,6 +45,7 @@ TARGET_DEVICE = "CPU"
 OUTPUT_VIDEO_PATH = "../UI/resources/videos"
 CPU_EXTENSION = ""
 LOOP_VIDEO = False
+UI = False
 CONF_THRESHOLD_VALUE = 0.55
 LOG_FILE_PATH = "./intruders.log"
 LOG_WIN_HEIGHT = 432
@@ -123,6 +124,7 @@ def parse_args():
     global model_xml
     global model_bin
     global CPU_EXTENSION
+    global UI
     global TARGET_DEVICE
     global is_async_mode
 
@@ -154,6 +156,18 @@ def parse_args():
 
     if 'DEVICE' in os.environ.keys():
         TARGET_DEVICE = os.environ['DEVICE']
+
+    try:
+        UI = os.environ["UI"]
+        if UI == "True" or UI == "true":
+            UI = True
+        elif UI == "False" or UI == "false":
+            UI = False
+        else:
+            print("Invalid input for UI. Defaulting to UI = False")
+            UI = False
+    except:
+        UI = False
 
     if 'FLAG' in os.environ.keys():
         async_mode = os.environ['FLAG']
@@ -388,6 +402,8 @@ def intruder_detector():
     global video_caps
     global conf_labels_file_path
     global is_async_mode
+    global UI
+    global LOOP_VIDEO
 
     parse_args()
     ret = check_args()
@@ -428,10 +444,11 @@ def intruder_detector():
         return -16, ''
 
     # Initializing VideoWriter for each source
-    for video_cap in video_caps:
-        ret, ret_value = video_cap.init_vw(int(video_cap.input_height), int(video_cap.input_width))
-        if ret != 0:
-            return ret, ret_value
+    if UI and not LOOP_VIDEO:
+        for video_cap in video_caps:
+            ret, ret_value = video_cap.init_vw(int(video_cap.input_height), int(video_cap.input_width))
+            if ret != 0:
+                return ret, ret_value
 
     # Initialise the class
     infer_network = Network()
@@ -565,7 +582,9 @@ def intruder_detector():
                 videoCapResult.frame_count += 1
 
                 # Video output
-                videoCapResult.vw.write(videoCapResult.frame)
+                if UI and not LOOP_VIDEO:
+                    videoCapResult.vw.write(videoCapResult.frame)
+
                 log_message = "Async mode is on." if is_async_mode else \
                     "Async mode is off."
                 cv2.putText(videoCapResult.frame, log_message, (10, int(videoCapResult.input_height) - 50),

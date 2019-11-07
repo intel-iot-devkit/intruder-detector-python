@@ -29,7 +29,7 @@ This reference implementation detect the objects in a designated area. It gives 
    uname -a
   ```
 
-- Intel® Distribution of OpenVINO™ toolkit 2019 R2 release
+- Intel® Distribution of OpenVINO™ toolkit 2019 R3 release
 
 ## How It works
 
@@ -60,7 +60,7 @@ FFmpeg is a free and open-source project capable of recording, converting and st
 
 ### Which model to use
 
-The application uses the [person-vehicle-bike-detection-crossroad-0078](https://docs.openvinotoolkit.org/2019_R2/_intel_models_person_vehicle_bike_detection_crossroad_0078_description_person_vehicle_bike_detection_crossroad_0078.html) Intel® model, that can be accessed using the **model downloader**. The **model downloader** downloads the __.xml__ and __.bin__ files that will be used by the application.
+The application uses the [person-vehicle-bike-detection-crossroad-0078](https://docs.openvinotoolkit.org/2019_R3/_models_intel_person_vehicle_bike_detection_crossroad_0078_description_person_vehicle_bike_detection_crossroad_0078.html) Intel® model, that can be accessed using the **model downloader**. The **model downloader** downloads the __.xml__ and __.bin__ files that will be used by the application.
 
 The application also works with any object-detection model, provided it has the same input and output format of the SSD model.
 The model can be any object detection model:
@@ -76,7 +76,7 @@ To install the dependencies of the RI and to download the **person-vehicle-bike-
   ```
 The model will be downloaded inside the following directory:
 
-    /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Security/object_detection/crossroad/0078/dldt/
+    /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-vehicle-bike-detection-crossroad-0078/
 
 ### The Labels File
 
@@ -178,7 +178,7 @@ python3 intruder_detector.py -h
  To run the application with the needed models:
 
 ```
-python3 intruder_detector.py -lb ../resources/labels.txt -l  /opt/intel/openvino/deployment_tools/inference_engine/lib/intel64/libcpu_extension_avx2.so -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Security/object_detection/crossroad/0078/dldt/FP32/person-vehicle-bike-detection-crossroad-0078.xml
+python3 intruder_detector.py -lb ../resources/labels.txt -l  /opt/intel/openvino/deployment_tools/inference_engine/lib/intel64/libcpu_extension_avx2.so -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-vehicle-bike-detection-crossroad-0078/FP32/person-vehicle-bike-detection-crossroad-0078.xml
 ```
 To run the application on sync mode, use **-f sync** as command line argument. By default, the application runs on async mode.
 
@@ -192,7 +192,7 @@ To run with multiple devices use -d MULTI:device1,device2. For example: `-d MULT
 Although the application runs on the CPU by default, this can also be explicitly specified through the `-d CPU` command-line argument:
 
 ```
-python3 intruder_detector.py -lb ../resources/labels.txt -l  /opt/intel/openvino/deployment_tools/inference_engine/lib/intel64/libcpu_extension_avx2.so -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Security/object_detection/crossroad/0078/dldt/FP32/person-vehicle-bike-detection-crossroad-0078.xml -d CPU
+python3 intruder_detector.py -lb ../resources/labels.txt -l  /opt/intel/openvino/deployment_tools/inference_engine/lib/intel64/libcpu_extension_avx2.so -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-vehicle-bike-detection-crossroad-0078/FP32/person-vehicle-bike-detection-crossroad-0078.xml -d CPU
 ```
 
 #### Run on the Integrated GPU
@@ -200,14 +200,14 @@ python3 intruder_detector.py -lb ../resources/labels.txt -l  /opt/intel/openvino
 * To run on the integrated Intel® GPU with floating point precision 32 (FP32), use the `-d GPU` command-line argument:
 
 ```
-python3 intruder_detector.py -lb ../resources/labels.txt -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Security/object_detection/crossroad/0078/dldt/FP32/person-vehicle-bike-detection-crossroad-0078.xml -d GPU
+python3 intruder_detector.py -lb ../resources/labels.txt -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-vehicle-bike-detection-crossroad-0078/FP32/person-vehicle-bike-detection-crossroad-0078.xml -d GPU
 ```
 **FP32**: FP32 is single-precision floating-point arithmetic uses 32 bits to represent numbers. 8 bits for the magnitude and 23 bits for the precision. For more information, [click here](https://en.wikipedia.org/wiki/Single-precision_floating-point_format)<br>
 
 * To run on the integrated Intel® GPU with floating point precision 16 (FP16):
 
 ```
-python3 intruder_detector.py -lb ../resources/labels.txt -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Security/object_detection/crossroad/0078/dldt/FP16/person-vehicle-bike-detection-crossroad-0078.xml -d GPU
+python3 intruder_detector.py -lb ../resources/labels.txt -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml -d GPU
 ```
 **FP16**: FP16 is half-precision floating-point arithmetic uses 16 bits. 5 bits for the magnitude and 10 bits for the precision. For more information, [click here](https://en.wikipedia.org/wiki/Half-precision_floating-point_format)
 
@@ -216,7 +216,7 @@ python3 intruder_detector.py -lb ../resources/labels.txt -m /opt/intel/openvino/
 To run on the Intel® Neural Compute Stick, use the ```-d MYRIAD``` command-line argument:
 
 ```
-python3 intruder_detector.py -lb ../resources/labels.txt -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Security/object_detection/crossroad/0078/dldt/FP16/person-vehicle-bike-detection-crossroad-0078.xml -d MYRIAD
+python3 intruder_detector.py -lb ../resources/labels.txt -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml -d MYRIAD
 ```
 
 **Note:** The Intel® Neural Compute Stick can only run FP16 models. The model that is passed to the application, through the `-m <path_to_model>` command-line argument, must be of data type FP16.
@@ -224,33 +224,48 @@ python3 intruder_detector.py -lb ../resources/labels.txt -m /opt/intel/openvino/
 #### Run on the Intel® Movidius™ VPU
 To run on the Intel® Movidius™ VPU, use the `-d HDDL` command-line argument:
 ```
-python3 intruder_detector.py -lb ../resources/labels.txt -l /opt/intel/openvino/deployment_tools/inference_engine/lib/intel64/libcpu_extension_avx2.so -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Security/object_detection/crossroad/0078/dldt/FP16/person-vehicle-bike-detection-crossroad-0078.xml -d HDDL
+python3 intruder_detector.py -lb ../resources/labels.txt -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml -d HDDL
 ```
 **Note:** The Intel® Movidius™ VPU can only run FP16 models. The model that is passed to the application, through the `-m <path_to_model>` command-line argument, must be of data type FP16.
 
-<!--
-#### Run on the FPGA
 
-Before running the application on the FPGA,  program the AOCX (bitstream) file.<br>
-Use the setup_env.sh script from [fpga_support_files.tgz](http://registrationcenter-download.intel.com/akdlm/irc_nas/12954/fpga_support_files.tgz) to set the environment variables.<br>
-For example:
+#### Run on the Intel® Arria® 10 FPGA
+
+Before running the application on the FPGA, set the environment variables and  program the AOCX (bitstream) file.<br>
+
+Set the Board Environment Variable to the proper directory:
 
 ```
-source /home/<user>/Downloads/fpga_support_files/setup_env.sh
+export AOCL_BOARD_PACKAGE_ROOT=/opt/intel/openvino/bitstreams/a10_vision_design_sg<#>_bitstreams/BSP/a10_1150_sg<#>
+```
+**NOTE**: If you do not know which version of the board you have, please refer to the product label on the fan cover side or by the product SKU: Mustang-F100-A10-R10 => SG1; Mustang-F100-A10E-R10 => SG2 <br>
+
+Set the Board Environment Variable to the proper directory: 
+```
+export QUARTUS_ROOTDIR=/home/<user>/intelFPGA/18.1/qprogrammer
+```
+Set the remaining environment variables:
+```
+export PATH=$PATH:/opt/altera/aocl-pro-rte/aclrte-linux64/bin:/opt/altera/aocl-pro-rte/aclrte-linux64/host/linux64/bin:/home/<user>/intelFPGA/18.1/qprogrammer/bin
+export INTELFPGAOCLSDKROOT=/opt/altera/aocl-pro-rte/aclrte-linux64
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$AOCL_BOARD_PACKAGE_ROOT/linux64/lib
+export CL_CONTEXT_COMPILER_MODE_INTELFPGA=3
+source /opt/altera/aocl-pro-rte/aclrte-linux64/init_opencl.sh
+```
+**NOTE**: It is recommended to create your own script for your system to aid in setting up these environment variables. It will be run each time you need a new terminal or restart your system. 
+
+The bitstreams for HDDL-F can be found under the `/opt/intel/openvino/bitstreams/a10_vision_design_sg<#>_bitstreams/` directory.<br><br>To program the bitstream use the below command:<br>
+```
+aocl program acl0 /opt/intel/openvino/bitstreams/a10_vision_design_sg<#>_bitstreams/2019R3_PV_PL1_FP11_RMNet.aocx
 ```
 
-The bitstreams for HDDL-F can be found under the `/opt/intel/openvino/bitstreams/a10_vision_design_bitstreams` folder.<br><br>To program the bitstream use the below command:<br>
-```
-aocl program acl0 /opt/intel/openvino/bitstreams/a10_vision_design_bitstreams/2019R1_PL1_FP11_RMNet.aocx
-```
-
-For more information on programming the bitstreams, please refer to https://software.intel.com/en-us/articles/OpenVINO-Install-Linux-FPGA#inpage-nav-11
+For more information on programming the bitstreams, please refer to [OpenVINO-Install-Linux-FPGA](https://software.intel.com/en-us/articles/OpenVINO-Install-Linux-FPGA#inpage-nav-11)
 
 To run the application on the FPGA with floating point precision 16 (FP16), use the `-d HETERO:FPGA,CPU` command-line argument:
 ```
-python3 intruder_detector.py -lb ../resources/labels.txt -l /opt/intel/openvino/deployment_tools/inference_engine/lib/intel64/libcpu_extension_avx2.so -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Security/object_detection/crossroad/0078/dldt/FP16/person-vehicle-bike-detection-crossroad-0078.xml -d HETERO:FPGA,CPU
+python3 intruder_detector.py -lb ../resources/labels.txt -l /opt/intel/openvino/deployment_tools/inference_engine/lib/intel64/libcpu_extension_avx2.so -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml -d HETERO:FPGA,CPU
 ```
--->
+
 #### Input Video Loop
 
 By default, the application reads the input videos only once, and ends when the videos end.
@@ -260,11 +275,17 @@ The reference implementation provides an option to loop the video so that the in
 To loop the sample video, run the application with the `-lp true` command-line argument:
 
 ```
-python3 intruder_detector.py -d CPU -lb ../resources/labels.txt -l  /opt/intel/openvino/deployment_tools/inference_engine/lib/intel64/libcpu_extension_avx2.so -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Security/object_detection/crossroad/0078/dldt/FP32/person-vehicle-bike-detection-crossroad-0078.xml -lp true
+python3 intruder_detector.py -d CPU -lb ../resources/labels.txt -l  /opt/intel/openvino/deployment_tools/inference_engine/lib/intel64/libcpu_extension_avx2.so -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-vehicle-bike-detection-crossroad-0078/FP32/person-vehicle-bike-detection-crossroad-0078.xml -lp true
 ```
 
 This looping does not affect live camera streams, as camera video streams are continuous and do not end.
 
 ## Use the Browser UI
 
-The default application uses a simple user interface created with OpenCV. Follow the readme provided [here](./UI) to run the web based UI.
+The default application uses a simple user interface created with OpenCV. A web based UI, with more features is also provided with this application.<br>
+From the working directory, run the application with `-ui true` command line argument. For example:
+```
+python3 intruder_detector.py -lb ../resources/labels.txt -l  /opt/intel/openvino/deployment_tools/inference_engine/lib/intel64/libcpu_extension_avx2.so -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-vehicle-bike-detection-crossroad-0078/FP32/person-vehicle-bike-detection-crossroad-0078.xml -d CPU -ui true
+```
+Follow the readme provided [here](./UI) to run the web based UI. <br>
+__Note:__ The browser UI does not support when the application is run using the option to loop the video.

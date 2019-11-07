@@ -29,7 +29,7 @@ This reference implementation detect the objects in a designated area. It gives 
    uname -a
   ```
 
-- Intel® Distribution of OpenVINO™ toolkit 2019 R2 release
+- Intel® Distribution of OpenVINO™ toolkit 2019 R3 release
 - Jupyter* Notebook v5.7.0
 
 ## How It works
@@ -61,7 +61,7 @@ FFmpeg is a free and open-source project capable of recording, converting and st
 
 ### Which model to use
 
-The application uses the [person-vehicle-bike-detection-crossroad-0078](https://docs.openvinotoolkit.org/2019_R2/_intel_models_person_vehicle_bike_detection_crossroad_0078_description_person_vehicle_bike_detection_crossroad_0078.html) Intel® model, that can be accessed using the **model downloader**. The **model downloader** downloads the __.xml__ and __.bin__ files that will be used by the application.
+The application uses the [person-vehicle-bike-detection-crossroad-0078](https://docs.openvinotoolkit.org/2019_R3/_models_intel_person_vehicle_bike_detection_crossroad_0078_description_person_vehicle_bike_detection_crossroad_0078.html) Intel® model, that can be accessed using the **model downloader**. The **model downloader** downloads the __.xml__ and __.bin__ files that will be used by the application.
 
 The application also works with any object-detection model, provided it has the same input and output format of the SSD model.
 The model can be any object detection model:
@@ -77,7 +77,7 @@ To install the dependencies of the RI and to download the **person-vehicle-bike-
   ```
 The model will be downloaded inside the following directory:
 
-    /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Security/object_detection/crossroad/0078/dldt/
+    /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-vehicle-bike-detection-crossroad-0078/
 
 ### The Labels File
 
@@ -171,23 +171,37 @@ __Note__: This command needs to be executed only once in the terminal where the 
   cd <path_to_the_intruder-detector-python_directory>/Jupyter
   jupyter notebook
   ```
-<!--
-  **Note:**<br>
-    Before running the application on the FPGA, program the AOCX (bitstream) file. Use the setup_env.sh script from [fpga_support_files.tgz](http://registrationcenter-download.intel.com/akdlm/irc_nas/12954/fpga_support_files.tgz) to set the environment variables.<br>
-    For example:
+
+  **NOTE**:
+    Before running the application on the FPGA, set the environment variables and  program the AOCX (bitstream) file.<br>
+
+    Set the Board Environment Variable to the proper directory:
 
     ```
-    source /home/<user>/Downloads/fpga_support_files/setup_env.sh
+    export AOCL_BOARD_PACKAGE_ROOT=/opt/intel/openvino/bitstreams/a10_vision_design_sg<#>_bitstreams/BSP/a10_1150_sg<#>
+    ```
+    **NOTE**: If you do not know which version of the board you have, please refer to the product label on the fan cover side or by the product SKU: Mustang-F100-A10-R10 => SG1; Mustang-F100-A10E-R10 => SG2 <br>
+
+    Set the Board Environment Variable to the proper directory: 
+    ```
+    export QUARTUS_ROOTDIR=/home/<user>/intelFPGA/18.1/qprogrammer
+    ```
+    Set the remaining environment variables:
+    ```
+    export PATH=$PATH:/opt/altera/aocl-pro-rte/aclrte-linux64/bin:/opt/altera/aocl-pro-rte/aclrte-linux64/host/linux64/bin:/home/<user>/intelFPGA/18.1/qprogrammer/bin
+    export INTELFPGAOCLSDKROOT=/opt/altera/aocl-pro-rte/aclrte-linux64
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$AOCL_BOARD_PACKAGE_ROOT/linux64/lib
+    export CL_CONTEXT_COMPILER_MODE_INTELFPGA=3
+    source /opt/altera/aocl-pro-rte/aclrte-linux64/init_opencl.sh
+    ```
+    **NOTE**: It is recommended to create your own script for your system to aid in setting up these environment variables. It will be run each time you need a new terminal or restart your system. 
+
+    The bitstreams for HDDL-F can be found under the `/opt/intel/openvino/bitstreams/a10_vision_design_sg<#>_bitstreams/` directory.<br><br>To program the bitstream use the below command:<br>
+    ```
+    aocl program acl0 /opt/intel/openvino/bitstreams/a10_vision_design_sg<#>_bitstreams/2019R3_PV_PL1_FP11_RMNet.aocx
     ```
 
-    The bitstreams for HDDL-F can be found under the `/opt/intel/openvino/bitstreams/a10_vision_design_bitstreams` folder.<br>To program the bitstream use the below command:<br>
-    ```
-    aocl program acl0 /opt/intel/openvino/bitstreams/a10_vision_design_bitstreams/2019R1_PL1_FP11_RMNet.aocx
-    ```
-
-    For more information on programming the bitstreams, please refer to https://software.intel.com/en-us/articles/OpenVINO-Install-Linux-FPGA#inpage-nav-11<br>
-<br>
--->
+    For more information on programming the bitstreams, please refer to [OpenVINO-Install-Linux-FPGA](https://software.intel.com/en-us/articles/OpenVINO-Install-Linux-FPGA#inpage-nav-11)
 
 **Follow the steps below :**
 
@@ -200,7 +214,7 @@ __Note__: This command needs to be executed only once in the terminal where the 
 3. In the first cell, type **import os** and press **Shift+Enter**.
 4. Export the following environment variables in second cell and press **Shift+Enter**:<br>
    ```
-   %env MODEL=/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Security/object_detection/crossroad/0078/dldt/FP32/person-vehicle-bike-detection-crossroad-0078.xml
+   %env MODEL=/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-vehicle-bike-detection-crossroad-0078/FP32/person-vehicle-bike-detection-crossroad-0078.xml
    %env LABEL_FILE=../resources/labels.txt
    %env CPU_EXTENSION=/opt/intel/openvino/deployment_tools/inference_engine/lib/intel64/libcpu_extension_avx2.so
    %env DEVICE=CPU
@@ -231,39 +245,47 @@ To run the application on sync mode, export the environment variable **%env FLAG
    - With the **floating point precision 16 (FP16)**,  change the environment variables as given below:<br>
      ```
      %env DEVICE = GPU
-     %env MODEL=/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Security/object_detection/crossroad/0078/dldt/FP16/person-vehicle-bike-detection-crossroad-0078.xml
+     %env MODEL=/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml
      ```
      **FP16**: FP16 is half-precision floating-point arithmetic uses 16 bits. 5 bits for the magnitude and 10 bits for the precision. For more information, [click here](https://en.wikipedia.org/wiki/Half-precision_floating-point_format)
    - **CPU_EXTENSION** environment variable is not required.
+   
 2. To run the application on **Intel® Neural Compute Stick**:
    - Change the **%env DEVICE = CPU** to **%env DEVICE = MYRIAD**.  
    - The Intel® Neural Compute Stick can only run FP16 models. Change the environment variable for the model as shown below. <br>
-     **%env MODEL=/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Security/object_detection/crossroad/0078/dldt/FP16/person-vehicle-bike-detection-crossroad-0078.xml**.
+     **%env MODEL=/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml**.
    - **CPU_EXTENSION** environment variable is not required.
    **Note:** The Intel® Neural Compute Stick can only run FP16 models. The model that is passed to the application must be of data type FP16.
+   
 3. To run the application on **Intel® Movidius™ VPU**:
     - Change the **%env DEVICE = CPU** to **%env DEVICE = HDDL**.
     - The Intel® Movidius™ VPU can only run FP16 models. Change the environment variable for the model as shown below  and the model that is passed to the application must be of data type FP16. <br>
-    **%env MODEL=/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Security/object_detection/crossroad/0078/dldt/FP16/person-vehicle-bike-detection-crossroad-0078.xml**.
+    **%env MODEL=/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml**.
     - **CPU_EXTENSION** environment variable is not required.
 
-4. By default, the application reads the input videos only once.  To continuously loop the videos, change the value of **LOOP_VIDEO** in the environmental variable as given below.<br>
+
+4. To run the application on **Intel® Arria® 10 FPGA**:
+    - Change the **%env DEVICE = CPU** to **%env DEVICE = HETERO:FPGA,CPU**.
+    - With the **floating point precision 16 (FP16)**, change the path of the model in the environment variable **MODEL** as given below:<br>
+    **%env MODEL=/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml**.
+   - **%env CPU_EXTENSION=/opt/intel/openvino/deployment_tools/inference_engine/lib/intel64/libcpu_extension_avx2.so<br>**
+
+
+5. By default, the application reads the input videos only once.  To continuously loop the videos, change the value of **LOOP_VIDEO** in the environmental variable as given below.<br>
    - Change **%env LOOP_VIDEO=False** to  **%env LOOP_VIDEO=True**.<br>
 
-5. To run the application on multiple devices: <br>
+6. To run the application on multiple devices: <br>
    For example:
       * Change the **%env DEVICE = CPU** to **%env DEVICE = MULTI:CPU,GPU,MYRIAD**
       * With the **floating point precision 16 (FP16)**, change the path of the model in the environment variable **MODEL** as given below: <br>
-        **%env MODEL=/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Security/object_detection/crossroad/0078/dldt/FP16/person-vehicle-bike-detection-crossroad-0078.xml**.
+        **%env MODEL=/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml**.
       * **%env CPU_EXTENSION=/opt/intel/openvino/deployment_tools/inference_engine/lib/intel64/libcpu_extension_avx2.so**<br>
-<!--
-6. To run the application on **FPGA**:
-    - Change the **%env DEVICE = CPU** to **%env DEVICE = HETERO:FPGA,CPU**.
-    - With the **floating point precision 16 (FP16)**, change the path of the model in the environment variable **MODEL** as given below:<br>
-    **%env MODEL=/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Security/object_detection/crossroad/0078/dldt/FP16/person-vehicle-bike-detection-crossroad-0078.xml**.
-   - **%env CPU_EXTENSION=/opt/intel/openvino/deployment_tools/inference_engine/lib/intel64/libcpu_extension_avx2.so<br>**
--->
+
 ## Use the Browser UI
 
-The default application uses a simple user interface created with OpenCV.
-A web based UI, with more features is also provided [here](../UI).
+The default application uses a simple user interface created with OpenCV. A web based UI, with more features is also provided with this application.
+To run the application with UI mode on, change the environment variable `UI` in second cell to `true` i.e 
+```
+%env UI = true
+```
+Follow the readme provided [here](../UI) to run the web based UI.

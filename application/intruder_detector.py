@@ -43,6 +43,7 @@ TARGET_DEVICE = "CPU"
 OUTPUT_VIDEO_PATH = "../UI/resources/videos"
 CPU_EXTENSION = ""
 LOOP_VIDEO = False
+UI = False
 CONF_THRESHOLD_VALUE = 0.55
 LOG_FILE_PATH = "./intruders.log"
 LOG_WIN_HEIGHT = 432
@@ -122,6 +123,7 @@ def parse_args():
     global conf_labels_file_path
     global model_xml
     global model_bin
+    global UI
     global CPU_EXTENSION
     global is_async_mode
     
@@ -139,6 +141,7 @@ def parse_args():
                         help="MKLDNN (CPU)-targeted custom layers. Absolute path to a shared library with the kernels "
                         "impl.", type=str, default=None)
     parser.add_argument("-f", "--flag", help="sync or async", default="async", type=str)
+    parser.add_argument("-ui", "--user_interface", help="User interface for the video samples", default="False", type=str)
     args = parser.parse_args()
     if args.model:
         model_xml = args.model
@@ -158,6 +161,15 @@ def parse_args():
         is_async_mode = False
     else:
         is_async_mode = True
+    if args.user_interface:
+        if args.user_interface == "True" or args.user_interface == "true":
+            UI = True
+        elif args.user_interface == "False" or args.user_interface == "false":
+            UI = False     
+        else:
+            print("Invalid input for -ui/--user_interface. Defaulting to UI = False")     
+            UI = False        
+
 
     if args.cpu_extension:
         CPU_EXTENSION = args.cpu_extension
@@ -390,6 +402,8 @@ def intruder_detector():
     global video_caps
     global conf_labels_file_path
     global is_async_mode
+    global UI
+    global LOOP_VIDEO
 
     parse_args()
     ret = check_args()
@@ -430,10 +444,11 @@ def intruder_detector():
         return -16, ''
 
     # Initializing VideoWriter for each source
-    for video_cap in video_caps:
-        ret, ret_value = video_cap.init_vw(int(video_cap.input_height), int(video_cap.input_width))
-        if ret != 0:
-            return ret, ret_value
+    if UI and not LOOP_VIDEO:
+        for video_cap in video_caps:
+            ret, ret_value = video_cap.init_vw(int(video_cap.input_height), int(video_cap.input_width))
+            if ret != 0:
+                return ret, ret_value
 
     # Initialise the class
     infer_network = Network()
@@ -566,7 +581,9 @@ def intruder_detector():
                 videoCapResult.frame_count += 1
 
                 # Video output
-                videoCapResult.vw.write(videoCapResult.frame)
+                if UI and not LOOP_VIDEO:
+                    videoCapResult.vw.write(videoCapResult.frame)
+    
                 log_message = "Async mode is on." if is_async_mode else \
                     "Async mode is off."
                 cv2.putText(videoCapResult.frame, log_message, (10, int(videoCapResult.input_height) - 50),
