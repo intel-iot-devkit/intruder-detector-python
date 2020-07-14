@@ -2,7 +2,7 @@
 
 | Details               |                   |
 | --------------------- | ----------------- |
-| Target OS:            | Ubuntu* 16.04 LTS |
+| Target OS:            | Ubuntu* 18.04 LTS |
 | Programming Language: | Python* 3.5       |
 | Time to Complete:     | 45 min            |
 
@@ -21,7 +21,7 @@ This reference implementation detect the objects in a designated area. It gives 
 
 ### Software
 
-- [Ubuntu\* 16.04 LTS](http://releases.ubuntu.com/16.04/)<br>
+- [Ubuntu\* 18.04 LTS](http://releases.ubuntu.com/18.04/)<br>
   NOTE: Use kernel versions 4.14+ with this software.<br> 
   Determine the kernel version with the below uname command. 
 
@@ -29,7 +29,7 @@ This reference implementation detect the objects in a designated area. It gives 
    uname -a
   ```
 
-- Intel® Distribution of OpenVINO™ toolkit 2019 R3 release
+- Intel® Distribution of OpenVINO™ toolkit 2020 R3 release
 - Jupyter* Notebook v5.7.0
 
 ## How It works
@@ -61,7 +61,7 @@ FFmpeg is a free and open-source project capable of recording, converting and st
 
 ### Which model to use
 
-The application uses the [person-vehicle-bike-detection-crossroad-0078](https://docs.openvinotoolkit.org/2019_R3/_models_intel_person_vehicle_bike_detection_crossroad_0078_description_person_vehicle_bike_detection_crossroad_0078.html) Intel® model, that can be accessed using the **model downloader**. The **model downloader** downloads the __.xml__ and __.bin__ files that will be used by the application.
+The application uses the [person-vehicle-bike-detection-crossroad-0078](https://docs.openvinotoolkit.org/2020.3/_models_intel_person_vehicle_bike_detection_crossroad_0078_description_person_vehicle_bike_detection_crossroad_0078.html) Intel® model, that can be accessed using the **model downloader**. The **model downloader** downloads the __.xml__ and __.bin__ files that will be used by the application.
 
 The application also works with any object-detection model, provided it has the same input and output format of the SSD model.
 The model can be any object detection model:
@@ -159,7 +159,7 @@ ls /dev/video*
 ## Setup the environment
 You must configure the environment to use the Intel® Distribution of OpenVINO™ toolkit one time per session by running the following command:
 
-    source /opt/intel/openvino/bin/setupvars.sh -pyver 3.5
+    source /opt/intel/openvino/bin/setupvars.sh
     
 __Note__: This command needs to be executed only once in the terminal where the application will be executed. If the terminal is closed, the command needs to be executed again.
     
@@ -171,7 +171,7 @@ __Note__: This command needs to be executed only once in the terminal where the 
   cd <path_to_the_intruder-detector-python_directory>/Jupyter
   jupyter notebook
   ```
-
+<!--
   **NOTE**:
     Before running the application on the FPGA, set the environment variables and  program the AOCX (bitstream) file.<br>
 
@@ -202,6 +202,7 @@ __Note__: This command needs to be executed only once in the terminal where the 
     ```
 
     For more information on programming the bitstreams, please refer to [OpenVINO-Install-Linux-FPGA](https://software.intel.com/en-us/articles/OpenVINO-Install-Linux-FPGA#inpage-nav-11)
+-->
 
 **Follow the steps below :**
 
@@ -216,7 +217,6 @@ __Note__: This command needs to be executed only once in the terminal where the 
    ```
    %env MODEL=/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-vehicle-bike-detection-crossroad-0078/FP32/person-vehicle-bike-detection-crossroad-0078.xml
    %env LABEL_FILE=../resources/labels.txt
-   %env CPU_EXTENSION=/opt/intel/openvino/deployment_tools/inference_engine/lib/intel64/libcpu_extension_avx2.so
    %env DEVICE=CPU
    %env LOOP_VIDEO=False
    ```
@@ -248,28 +248,26 @@ To run the application on sync mode, export the environment variable **%env FLAG
      %env MODEL=/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml
      ```
      **FP16**: FP16 is half-precision floating-point arithmetic uses 16 bits. 5 bits for the magnitude and 10 bits for the precision. For more information, [click here](https://en.wikipedia.org/wiki/Half-precision_floating-point_format)
-   - **CPU_EXTENSION** environment variable is not required.
+
    
 2. To run the application on **Intel® Neural Compute Stick**:
    - Change the **%env DEVICE = CPU** to **%env DEVICE = MYRIAD**.  
    - The Intel® Neural Compute Stick can only run FP16 models. Change the environment variable for the model as shown below. <br>
      **%env MODEL=/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml**.
-   - **CPU_EXTENSION** environment variable is not required.
    **Note:** The Intel® Neural Compute Stick can only run FP16 models. The model that is passed to the application must be of data type FP16.
    
 3. To run the application on **Intel® Movidius™ VPU**:
     - Change the **%env DEVICE = CPU** to **%env DEVICE = HDDL**.
     - The Intel® Movidius™ VPU can only run FP16 models. Change the environment variable for the model as shown below  and the model that is passed to the application must be of data type FP16. <br>
     **%env MODEL=/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml**.
-    - **CPU_EXTENSION** environment variable is not required.
 
 
+<!--
 4. To run the application on **Intel® Arria® 10 FPGA**:
     - Change the **%env DEVICE = CPU** to **%env DEVICE = HETERO:FPGA,CPU**.
     - With the **floating point precision 16 (FP16)**, change the path of the model in the environment variable **MODEL** as given below:<br>
     **%env MODEL=/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml**.
-   - **%env CPU_EXTENSION=/opt/intel/openvino/deployment_tools/inference_engine/lib/intel64/libcpu_extension_avx2.so<br>**
-
+-->
 
 5. By default, the application reads the input videos only once.  To continuously loop the videos, change the value of **LOOP_VIDEO** in the environmental variable as given below.<br>
    - Change **%env LOOP_VIDEO=False** to  **%env LOOP_VIDEO=True**.<br>
@@ -279,7 +277,7 @@ To run the application on sync mode, export the environment variable **%env FLAG
       * Change the **%env DEVICE = CPU** to **%env DEVICE = MULTI:CPU,GPU,MYRIAD**
       * With the **floating point precision 16 (FP16)**, change the path of the model in the environment variable **MODEL** as given below: <br>
         **%env MODEL=/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-vehicle-bike-detection-crossroad-0078/FP16/person-vehicle-bike-detection-crossroad-0078.xml**.
-      * **%env CPU_EXTENSION=/opt/intel/openvino/deployment_tools/inference_engine/lib/intel64/libcpu_extension_avx2.so**<br>
+
 
 ## Use the Browser UI
 
