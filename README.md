@@ -1,4 +1,4 @@
-# Intruder Detector
+﻿# Intruder Detector
 
 | Details               |                   |
 | --------------------- | ----------------- |
@@ -254,3 +254,4 @@ python3 intruder_detector.py -lb ../resources/labels.txt  -m /opt/intel/openvino
 ```
 Follow the readme provided [here](./UI) to run the web based UI. <br>
 __Note:__ The browser UI does not support when the application is run using the option to loop the video.
+................
